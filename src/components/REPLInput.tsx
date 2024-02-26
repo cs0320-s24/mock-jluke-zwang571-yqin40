@@ -1,6 +1,7 @@
 import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
+import { loadCSVFile } from './LoadFileCommand';
 
 interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -25,11 +26,16 @@ export function REPLInput(props : REPLInputProps) {
     // add to it with new commands.
 
     function handleSubmit() {
-      setCount(count + 1);
-      setCommandString(commandString)
-
-      props.setHistory([...props.history, commandString])
-      setCommandString('') //reset to empty string
+      const commandParts = commandString.split(' ');
+      if (commandParts[0] === 'load_file') {
+        const filePath = commandParts.slice(1).join(' ');
+        loadCSVFile(filePath, (formattedData) => {
+          props.setHistory([...props.history, `Command: ${commandString}`, `Output: ${formattedData}`]);
+        });
+      } else {
+        props.setHistory([...props.history, commandString]);
+      }
+      setCommandString(''); 
     }
     /**
      * We suggest breaking down this component into smaller components, think about the individual pieces 

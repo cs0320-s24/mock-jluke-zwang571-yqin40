@@ -4,12 +4,14 @@
   "description": "Brown CSCI0320 Sprint 3 Gearup for Fall 2023",
   "license": "UNLICENSED",
   "dependencies": {
+    "papaparse": "^5.4.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.11.5",
+    "@types/papaparse": "^5.3.14",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@vitejs/plugin-react": "^4.1.0",
