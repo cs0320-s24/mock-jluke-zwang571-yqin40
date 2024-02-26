@@ -12,9 +12,11 @@ import { REPLInput } from './REPLInput';
   You don't need to do that for this gearup.
 */
 
+
 export default function REPL() {
   // TODO: Add some kind of shared state that holds all the commands submitted.
 
+  const [loadedData, setLoadedData] = useState<string>('');
   const [history, setHistory] = useState<string[]>([]);
 
 
@@ -25,7 +27,7 @@ export default function REPL() {
       {/* TODO: Update your REPLHistory and REPLInput to take in new shared state as props */}
       <REPLHistory history={history}/>
       <hr></hr>
-      <REPLInput history = {history} setHistory = {setHistory}></REPLInput>/
+      <REPLInput history={history} setHistory={setHistory} loadedData={loadedData} setLoadedData={setLoadedData} />
     </div>
   );
 }

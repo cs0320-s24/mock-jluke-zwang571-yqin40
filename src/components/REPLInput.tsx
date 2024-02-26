@@ -2,11 +2,14 @@ import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
 import { loadCSVFile } from './LoadFileCommand';
+import { viewLoadedData } from './ViewCommand';
 
 interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
   history: string[]
   setHistory: Dispatch<SetStateAction<string[]>>
+  loadedData: string;  
+  setLoadedData: Dispatch<SetStateAction<string>>;  
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -29,14 +32,17 @@ export function REPLInput(props : REPLInputProps) {
       const commandParts = commandString.split(' ');
       if (commandParts[0] === 'load_file') {
         const filePath = commandParts.slice(1).join(' ');
-        loadCSVFile(filePath, (formattedData) => {
-          props.setHistory([...props.history, `Command: ${commandString}`, `Output: ${formattedData}`]);
-        });
+        loadCSVFile(filePath, props.setLoadedData, props.setHistory);
+        // 将 load_file 命令和文件路径添加到历史记录中
+        // props.setHistory([...props.history, `Command: ${commandString}`]);
+      } else if (commandParts[0] === 'view') {
+        viewLoadedData(props.loadedData, props.setHistory);
       } else {
         props.setHistory([...props.history, commandString]);
       }
-      setCommandString(''); 
+      setCommandString(''); // 重置命令字符串
     }
+    
     /**
      * We suggest breaking down this component into smaller components, think about the individual pieces 
      * of the REPL and how they connect to each other...
