@@ -1,6 +1,9 @@
 import Papa from 'papaparse';
 import { Dispatch, SetStateAction } from 'react';
 
+import { REPLFunction } from './REPL';
+
+
 export const loadCSVFile = (
     filePath: string,
     setLoadedData: Dispatch<SetStateAction<string>>,
@@ -42,3 +45,18 @@ const convertToHTMLTable = (data: any[][]): string => {
     html += '</table>';
     return html;
   };
+
+export const LoadCommand: REPLFunction = (args: Array<string>): string => {
+  // 1) send filepath to (mock) backend
+
+  // 2) print message received from (mock) backend
+    // success
+    // failure
+
+
+  return (
+
+      "Load command called"
+      //write help menu here
+  )
+}
