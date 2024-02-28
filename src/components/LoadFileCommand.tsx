@@ -1,4 +1,3 @@
-
 const stars = [
     { StarID: 0, ProperName: "Sol", X: 0, Y: 0, Z: 0 },
     { StarID: 1, ProperName: "Mars", X: 282.43485, Y: 0.00449, Z: 5.36884 },

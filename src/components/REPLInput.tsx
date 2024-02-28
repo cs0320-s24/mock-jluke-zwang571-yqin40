@@ -10,6 +10,11 @@ interface REPLInputProps{
   setHistory: Dispatch<SetStateAction<string[]>>
   loadedData: string;  
   setLoadedData: Dispatch<SetStateAction<string>>;  
+  commandString: string;
+  setCommandString: Dispatch<SetStateAction<string>>
+  index: number;
+  setIndex: Dispatch<SetStateAction<number>>
+  
 }
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
@@ -29,6 +34,7 @@ export function REPLInput(props : REPLInputProps) {
     // add to it with new commands.
 
     function handleSubmit() {
+
       const commandParts = commandString.split(' ');
       if (commandParts[0] === 'load_file') {
         const filePath = commandParts.slice(1).join(' ');
@@ -39,8 +45,18 @@ export function REPLInput(props : REPLInputProps) {
       } else {
         props.setHistory([...props.history, commandString]);
       }
-      setCommandString('');
-    }
+
+
+      // from gearup, set values
+      setCount(count + 1);
+      setCommandString(commandString)
+
+      props.setIndex(count);
+      props.setCommandString(commandString);
+
+      props.setHistory([...props.history, commandString])
+      setCommandString('') //reset to empty string
+    }    
     
     /**
      * We suggest breaking down this component into smaller components, think about the individual pieces 
