@@ -15,6 +15,7 @@ export const loadCSVFile = (
             const htmlTable = convertToHTMLTable(data);
             setLoadedData(htmlTable);
             // 在成功加载和解析 CSV 后，添加一条历史记录
+            // After successfully loading and parsing CSV, add a historical record
             setHistory((prevHistory: string[]) => [...prevHistory, `Command: load_file ${filePath}`, 'Output: Load successful']);
 
           }
@@ -23,6 +24,7 @@ export const loadCSVFile = (
       .catch(error => {
         console.error('Error loading or parsing CSV file:', error);
         // 如果加载或解析失败，也添加一条历史记录
+        // If loading or resolution fails, add a historical record        
         setHistory((prevHistory: string[]) => [...prevHistory, `Command: load_file ${filePath}`, `Output: Error - ${error.message}`]);
 
       });
