@@ -1,8 +1,8 @@
 import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
-import { loadCSVFile } from './LoadFileCommand';
-import { viewLoadedData } from './ViewCommand';
+import { loadCSVFileMockAsBackend } from './LoadFileCommandMockAsBackend';
+import { viewLoadedDataAsBackend } from './ViewCommandMockAsBackend';
 
 interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -32,15 +32,14 @@ export function REPLInput(props : REPLInputProps) {
       const commandParts = commandString.split(' ');
       if (commandParts[0] === 'load_file') {
         const filePath = commandParts.slice(1).join(' ');
-        loadCSVFile(filePath, props.setLoadedData, props.setHistory);
-        // 将 load_file 命令和文件路径添加到历史记录中
+        loadCSVFileMockAsBackend(filePath, props.setLoadedData, props.setHistory);
         // props.setHistory([...props.history, `Command: ${commandString}`]);
       } else if (commandParts[0] === 'view') {
-        viewLoadedData(props.loadedData, props.setHistory);
+        viewLoadedDataAsBackend(props.loadedData, props.setHistory);
       } else {
         props.setHistory([...props.history, commandString]);
       }
-      setCommandString(''); // 重置命令字符串
+      setCommandString('');
     }
     
     /**

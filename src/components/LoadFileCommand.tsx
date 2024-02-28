@@ -1,42 +1,13 @@
-import Papa from 'papaparse';
-import { Dispatch, SetStateAction } from 'react';
 
-export const loadCSVFile = (
+const stars = [
+    { StarID: 0, ProperName: "Sol", X: 0, Y: 0, Z: 0 },
+    { StarID: 1, ProperName: "Mars", X: 282.43485, Y: 0.00449, Z: 5.36884 },
+    { StarID: 2, ProperName: "Earth", X: 43.04329, Y: 0.00285, Z: -15.24144 },
+    { StarID: 87666, ProperName: "Barnard's Star", X: -0.01729, Y: -1.81533, Z: 0.14824 }
+  ] as const;
+
+  export const loadCSVFile = (
     filePath: string,
-    setLoadedData: Dispatch<SetStateAction<string>>,
-    setHistory: Dispatch<SetStateAction<string[]>>
-  ) => {
-    fetch(filePath)
-      .then(response => response.text())
-      .then(csvData => {
-        Papa.parse(csvData, {
-          complete: (results) => {
-            const data = results.data as any[][];
-            const htmlTable = convertToHTMLTable(data);
-            setLoadedData(htmlTable);
-            // 在成功加载和解析 CSV 后，添加一条历史记录
-            setHistory((prevHistory: string[]) => [...prevHistory, `Command: load_file ${filePath}`, 'Output: Load successful']);
+    setLoadedData
 
-          }
-        });
-      })
-      .catch(error => {
-        console.error('Error loading or parsing CSV file:', error);
-        // 如果加载或解析失败，也添加一条历史记录
-        setHistory((prevHistory: string[]) => [...prevHistory, `Command: load_file ${filePath}`, `Output: Error - ${error.message}`]);
-
-      });
-  };
-
-const convertToHTMLTable = (data: any[][]): string => {
-    let html = '<table>';
-    data.forEach(row => {
-      html += '<tr>';
-      row.forEach(cell => {
-        html += `<td>${cell}</td>`;
-      });
-      html += '</tr>';
-    });
-    html += '</table>';
-    return html;
-  };
+  ) 
