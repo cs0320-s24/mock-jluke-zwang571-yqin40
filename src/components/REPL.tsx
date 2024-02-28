@@ -76,7 +76,7 @@ export default function REPL() {
   const [output, setOutput] = useState<string[][]|string>('');
   const [index, setIndex] = useState<number>(0);
   const [listOfREPLResults, setListOfREPLResults] = useState<REPLResult[]>([]);
-
+  const [displayMode, setDisplayMode] = useState<string>('brief');
   // TODO: Add some kind of shared state that holds all the commands submitted.
   // old states
   const [loadedData, setLoadedData] = useState<string>('');
@@ -86,7 +86,13 @@ export default function REPL() {
   // commmand 
   const keyword = commandString[0];
   const args = commandString.split(' ').slice(1);
-
+  if (keyword === 'mode') {
+    const newMode =displayMode === 'brief' ? 'verbose' : 'brief';
+    setDisplayMode(newMode);
+    setOutput(commands[keyword]([displayMode]));
+    const newREPLResult = {commandString, output, index};
+    setListOfREPLResults([...listOfREPLResults, newREPLResult])
+  }
   if (commands.hasOwnProperty(keyword)) {
     setOutput(commands[keyword](args));
 } else {
@@ -110,6 +116,7 @@ export default function REPL() {
       <REPLHistory 
         history={history} 
         listOfREPLResults={listOfREPLResults}
+        displayMode={displayMode}
       />
 
       <hr></hr>
