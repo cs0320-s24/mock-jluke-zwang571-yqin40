@@ -3,12 +3,8 @@ import '../styles/main.css';
 import { REPLResult } from "./REPL";
 
 interface REPLHistoryProps{
-    // TODO: Fill with some shared state tracking all the pushed commands
-    history: string[]
-    // newREPLResult: REPLResult;
     listOfREPLResults: REPLResult[]
     displayMode: string
-    // setListOfREPLResults: Dispatch<SetStateAction<REPLResult[]>>
     
 }
 export function REPLHistory(props : REPLHistoryProps) {
@@ -19,25 +15,32 @@ export function REPLHistory(props : REPLHistoryProps) {
             {/* This is where command history will go */}
             {/* TODO: To go through all the pushed commands... try the .map() function! */}
             {props.listOfREPLResults.map((result, index) => {
-                if(props.displayMode === 'verbose'){
-                    return <p key={index}>{result.commandString}</p>
-                }
+                const commandDisplay = (
+                    <p key={`${index}-command`}><strong>Command:</strong> {result.commandString}</p>
+                  );
+                let outputDisplay;
                 if(Array.isArray(result.output)){
-                    return (<table key={index}>
-                        <tbody>
-                            {result.output.map((subResult, subIndex) => {
-                                return (
-                                    <tr key={subIndex}>
-                                        <td>{subResult}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>)
+                    outputDisplay = (
+                        <table key={`${index}-output`}>
+                          <tbody>
+                            {result.output.map((subResult, subIndex) => (
+                              <tr key={`${index}-output-${subIndex}`}>
+                                <td>{subResult}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      );
                 }
                 else{
-                    return <p key={index}>{result.output}</p>
+                    outputDisplay = <p key={`${index}-output`}><strong>Output:</strong> {result.output}</p>;
                 }
+                return (
+                    <div key={index}>
+                      {props.displayMode === 'verbose' && commandDisplay}
+                      {outputDisplay}
+                    </div>
+                  );
             }
             )}
         </div>

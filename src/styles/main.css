@@ -13,7 +13,8 @@
     height:55vh;   
     margin: auto;
     display: block;
-    overflow: scroll;    
+    overflow: scroll;   
+    text-align: left;
 }
 
 .repl-input {        
