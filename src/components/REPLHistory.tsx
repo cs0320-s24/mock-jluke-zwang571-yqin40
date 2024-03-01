@@ -24,8 +24,6 @@ interface REPLHistoryProps {
 export function REPLHistory(props: REPLHistoryProps) {
   return (
     <div className="repl-history">
-      {/* This is where command history will go */}
-      {/* TODO: To go through all the pushed commands... try the .map() function! */}
       {props.listOfREPLResults.map((result, index) => {
         const commandDisplay = (
           <p key={`${index}-command`}><strong>Command:</strong> {result.commandString}</p>
@@ -36,10 +34,8 @@ export function REPLHistory(props: REPLHistoryProps) {
             <table key={`${index}-output`}>
               <tbody>
                 {result.output.map((subResult, subIndex) => (
-                  // For each sub-array in the output, we create a row
                   <tr key={`row-${subIndex}`}>
                     {subResult.map((subSubResult, subSubIndex) => (
-                      // For each element in the sub-array, we create a cell
                       <td key={`cell-${subIndex}-${subSubIndex}`}>
                         {subSubResult}
                       </td>

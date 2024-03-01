@@ -1,6 +1,3 @@
-import {LoadFileCommand} from '../../src/components/LoadFileCommand';
-import { ViewCommand } from '../../src/components/ViewCommand';
-
 export var is_loaded: boolean;
 declare var filePath: string;
 export var loaded_data: string[][] | string;
