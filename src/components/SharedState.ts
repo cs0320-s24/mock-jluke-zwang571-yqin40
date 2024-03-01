@@ -5,14 +5,14 @@ import { mockedData, csvMap } from '../../data/mocked_data/mocked_data';
 
 export class SharedState {
     private displayMode: string;
-    private loadedData: string | string[][];
+    private loadedData: string[][];
     private filepath: string;
     private functionMap: Map<string, any>;
 
    
     constructor() {
             this.displayMode = "brief";
-            this.loadedData = "";
+            this.loadedData = [[]];
             this.filepath ="" ;
             this.functionMap = new Map<string, any>(); // Initialize functionMap with an empty Map object
             this.functionMap.set("mode", this.modeCommand);
@@ -56,6 +56,23 @@ export class SharedState {
         }
     }
 
+    public SearchCommand: REPLFunction = (args: Array<string>): string|string[][] => {
+        if (this.filepath=="") {
+            return "Error: No data loaded";
+        } else {
+
+            if (args.includes('-q')) {
+                const argsNoFlags: string[] = args.filter((element) => !("-q"));
+                const queryString = argsNoFlags[0];
+                if (argsNoFlags.length > 1) {
+                    return "Error: bad query";
+                }                 
+                return [this.loadedData[0]];
+            } else {
+                return [this.loadedData[1]];
+            }
+        }
+    }
     private registerFunction = (command: string, func: any) => {
         this.functionMap.set(command, func);
     }
