@@ -23,11 +23,17 @@ export function REPLHistory(props : REPLHistoryProps) {
                     outputDisplay = (
                         <table key={`${index}-output`}>
                           <tbody>
-                            {result.output.map((subResult, subIndex) => (
-                              <tr key={`${index}-output-${subIndex}`}>
-                                <td>{subResult}</td>
-                              </tr>
-                            ))}
+                          {result.output.map((subResult, subIndex) => (
+                            // For each sub-array in the output, we create a row
+                            <tr key={`row-${subIndex}`}>
+                              {subResult.map((subSubResult, subSubIndex) => (
+                                // For each element in the sub-array, we create a cell
+                                <td key={`cell-${subIndex}-${subSubIndex}`}>
+                                  {subSubResult}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
                           </tbody>
                         </table>
                       );
