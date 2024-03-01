@@ -41,7 +41,7 @@ export default function REPL() {
   const [index, setIndex] = useState<number>(0);
   const [listOfREPLResults, setListOfREPLResults] = useState<REPLResult[]>([]);
   const [displayMode, setDisplayMode] = useState<string>('brief');
-  const [loadedData, setLoadedData] = useState<string>('');
+  const [loadFileName, setLoadFileName] = useState<string>('');
 
   return (
 
@@ -55,7 +55,7 @@ export default function REPL() {
       <REPLInput 
         commandString = {commandString} setCommandString = {setCommandString} 
         index = {index} setIndex= {setIndex}
-        loadedData={loadedData} setLoadedData={setLoadedData}
+        loadFileName={loadFileName} setLoadFileName={setLoadFileName}
         listOfREPLResults={listOfREPLResults} setListOfREPLResults={setListOfREPLResults}
         displayMode={displayMode} setDisplayMode={setDisplayMode}
       />

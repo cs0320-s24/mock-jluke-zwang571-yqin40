@@ -4,7 +4,8 @@ import { LoginButton } from './LoginButton';
 import REPL from './REPL';
 
 /**
- * This is the highest level component!
+ * This is the highest level component of the application.
+ * It renders the main layout of the app and manages the user's login state.
  */
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

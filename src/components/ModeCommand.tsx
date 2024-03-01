@@ -21,4 +21,5 @@ export const ModeCommand: REPLFunction = (args: Array<string>): string => {
   }else{
     return "Error: Invalid mode";
   }
+  
 }

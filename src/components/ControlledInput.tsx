@@ -1,25 +1,32 @@
 import '../styles/main.css';
 import { Dispatch, SetStateAction } from 'react';
 
-// Remember that parameter names don't necessarily need to overlap;
-// I could use different variable names in the actual function.
+/**
+ * A controlled input box. This is a component that wraps an input box, and manages its state.
+ */
 interface ControlledInputProps {
-    value: string, 
-    // This type comes from React+TypeScript. VSCode can suggest these.
-    //   Concretely, this means "a function that sets a state containing a string"
-    setValue: Dispatch<SetStateAction<string>>,
-    ariaLabel: string 
-  }
-  
-  // Input boxes contain state. We want to make sure React is managing that state,
-  //   so we have a special component that wraps the input box.
-  export function ControlledInput({value, setValue, ariaLabel}: ControlledInputProps) {
-    return (
-      <input type="text" className="repl-command-box"
-            value={value} 
-            placeholder="Enter command here!"
-            onChange={(ev) => setValue(ev.target.value)}
-            aria-label={ariaLabel}>
-      </input>
-    );
-  }
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
+  ariaLabel: string;
+}
+
+/**
+ * Renders a controlled input component.
+ *
+ * @param value - The current value of the input box.
+ * @param setValue - A function to update the value of the input box.
+ * @param ariaLabel - The ARIA label for the input box.
+ * @returns The controlled input component.
+ */
+export function ControlledInput({ value, setValue, ariaLabel }: ControlledInputProps) {
+  return (
+    <input
+      type="text"
+      className="repl-command-box"
+      value={value}
+      placeholder="Enter command here!"
+      onChange={(ev) => setValue(ev.target.value)}
+      aria-label={ariaLabel}
+    />
+  );
+}
