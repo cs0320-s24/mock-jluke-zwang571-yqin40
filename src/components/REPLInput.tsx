@@ -1,8 +1,8 @@
 import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
-import { loadCSVFileMockAsBackend } from './LoadFileCommandMockAsBackend';
-import { viewLoadedDataAsBackend } from './ViewCommandMockAsBackend';
+import { LoadFileCommand } from './LoadFileCommand';
+import { ViewCommand } from './ViewCommand';
 
 interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -38,10 +38,10 @@ export function REPLInput(props : REPLInputProps) {
       const commandParts = commandString.split(' ');
       if (commandParts[0] === 'load_file') {
         const filePath = commandParts.slice(1).join(' ');
-        loadCSVFileMockAsBackend(filePath, props.setLoadedData, props.setHistory);
+        LoadFileCommand(filePath);
         // props.setHistory([...props.history, `Command: ${commandString}`]);
       } else if (commandParts[0] === 'view') {
-        viewLoadedDataAsBackend(props.loadedData, props.setHistory);
+        ViewCommand();
       } else {
         props.setHistory([...props.history, commandString]);
       }
