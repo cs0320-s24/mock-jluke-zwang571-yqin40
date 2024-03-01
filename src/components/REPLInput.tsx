@@ -53,33 +53,6 @@ interface REPLInputProps{
 // You can use a custom interface or explicit fields or both! An alternative to the current function header might be:
 // REPLInput(history: string[], setHistory: Dispatch<SetStateAction<string[]>>)
 export function REPLInput(props : REPLInputProps) {
-<<<<<<< HEAD
-    // Remember: let React manage state in your webapp. 
-    // Manages the contents of the input box
-    const [commandString, setCommandString] = useState<string>('');
-    // TODO WITH TA : add a count state
-    const [count, setCount] = useState<number>(0);
-
-    // TODO WITH TA: build a handleSubmit function called in button onClick
-    const handleClick = () => {
-      setCount(count + 1);
-    };
-  
-    // TODO: Once it increments, try to make it push commands... Note that you can use the `...` spread syntax to copy what was there before
-    // add to it with new commands.
-
-    function handleSubmit() {
-
-      const commandParts = commandString.split(' ');
-      if (commandParts[0] === 'load_file') {
-        const filePath = commandParts.slice(1).join(' ');
-        LoadFileCommand(filePath);
-        // props.setHistory([...props.history, `Command: ${commandString}`]);
-      } else if (commandParts[0] === 'view') {
-        ViewCommand();
-      } else {
-        props.setHistory([...props.history, commandString]);
-=======
     function handleSubmit() { 
       const keyword = props.commandString.split(' ')[0];
       const args = props.commandString.split(' ').slice(1);
@@ -88,7 +61,6 @@ export function REPLInput(props : REPLInputProps) {
         const newMode =props.displayMode === 'brief' ? 'verbose' : 'brief';
         props.setDisplayMode(newMode);
         output = commands[keyword]([newMode]);
->>>>>>> 441dfbe91c29a05cd203b8b0d0346a172f5a787c
       }
       else if (commands.hasOwnProperty(keyword)) {
         output = commands[keyword](args);       
