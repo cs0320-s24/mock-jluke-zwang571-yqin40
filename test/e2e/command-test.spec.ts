@@ -51,12 +51,9 @@ test('type in "mode" command, expect to see mode change', async ({ page }) => {
   const outputSelector = '.repl-history p:has-text("Output:"), .repl-history table';
   const outputs = await page.$$eval(outputSelector, elements =>
     elements.map(element => {
-      // Check if the element is a table or paragraph
       if (element.tagName.toLowerCase() === 'table') {
-        // Extract text from each cell
         return Array.from(element.querySelectorAll('td')).map(td => td.textContent);
       } else {
-        // For paragraphs, just get the text content
         return element.textContent;
       }
     })
@@ -80,7 +77,9 @@ test('type in "mode" command, expect to see mode change', async ({ page }) => {
   expect(commands2).toEqual([]);
   expect(outputs2).toContain('Output: Switched to brief mode');
 });
-
+/**
+ * Load Command Test
+ */
 test('type in "load" command with wrong /right path expect to see file not loaded or loaded', async ({ page }) => {
   await page.getByLabel('Command input').fill('load wrong/path');
   await page.getByLabel('Submit').click();
@@ -120,6 +119,7 @@ test('type in "load" command with wrong /right path expect to see file not loade
   expect(commands2).toEqual([]);
   expect(outputs2).toContain("Output: File <stars.csv> loaded Successfully");
 });
+
 test('load file failed with verbose mode', async ({ page }) => {
   await page.getByLabel('Command input').fill('mode');
   await page.getByLabel('Submit').click();
@@ -145,6 +145,9 @@ test('load file failed with verbose mode', async ({ page }) => {
   expect(outputs).toContain("Output: Switched to verbose mode");
   expect(outputs).toContain("Output: Error: No data found for wrong/path");
 });
+/**
+ * View Command Test
+ */
 test('type in "view" command before Load, expect to see error message', async ({ page }) => {
   await page.getByLabel('Command input').fill('view');
   await page.getByLabel('Submit').click();
@@ -168,30 +171,32 @@ test('type in "view" command before Load, expect to see error message', async ({
   expect(commands).toEqual([])
   expect(outputs[0]).toContain('Output: Error: No data loaded');
 });
-// // To modify the test, change the string in the fill method
-// test('type in "view" command after Load, expect to see file displayed', async ({ page }) => {
-//   await page.getByLabel('Command input').fill('view');
-//   await page.getByLabel('Submit').click();
-//   const commandSelector = '.repl-history p:has-text("Command:")';
-//   const commands = await page.$$eval(commandSelector, elements =>
-//     elements.map(element => element.textContent)
-//   );
-//   const outputSelector = '.repl-history p:has-text("Output:"), .repl-history table';
-//   const outputs = await page.$$eval(outputSelector, elements =>
-//     elements.map(element => {
-//       // Check if the element is a table or paragraph
-//       if (element.tagName.toLowerCase() === 'table') {
-//         // Extract text from each cell
-//         return Array.from(element.querySelectorAll('td')).map(td => td.textContent);
-//       } else {
-//         // For paragraphs, just get the text content
-//         return element.textContent;
-//       }
-//     })
-//   );
-//   expect(commands).toContain('Command: view');
-//   expect(outputs).toContain('Output:Displayed file');
-// });
+
+test('type in "view" command after Load, expect to see file displayed', async ({ page }) => {
+  await page.getByLabel('Command input').fill('load stars.csv');
+  await page.getByLabel('Submit').click();
+  await page.getByLabel('Command input').fill('view');
+  await page.getByLabel('Submit').click();
+  const commandSelector = '.repl-history p:has-text("Command:")';
+  const commands = await page.$$eval(commandSelector, elements =>
+    elements.map(element => element.textContent)
+  );
+  const outputSelector = '.repl-history p:has-text("Output:"), .repl-history table';
+  const outputs = await page.$$eval(outputSelector, elements =>
+    elements.map(element => {
+      // Check if the element is a table or paragraph
+      if (element.tagName.toLowerCase() === 'table') {
+        // Extract text from each cell
+        return Array.from(element.querySelectorAll('td')).map(td => td.textContent);
+      } else {
+        // For paragraphs, just get the text content
+        return element.textContent;
+      }
+    })
+  );
+  expect(commands).toEqual([]);
+  expect(outputs[1]).toContain('Sol');
+});
 // test('type in "search" command after Load, expect to see search results', async ({ page }) => {
 //   await page.getByLabel('Command input').fill('search');
 //   await page.getByLabel('Submit').click();
