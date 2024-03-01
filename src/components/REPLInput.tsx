@@ -86,7 +86,7 @@ type StateMap = {
   // Directly compose the StateMap with the initialized state entries
 
 
- 
+const sharedStateInstance = new SharedState();
 
 export interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
@@ -117,26 +117,34 @@ export function REPLInput(props : REPLInputProps) {
     loadFileName: { value: props.loadFileName, setValue: props.setLoadFileName },
   };
 
+
     function handleSubmit() { 
       const keyword = props.commandString.split(' ')[0];
       const args = props.commandString.split(' ').slice(1);
       let output;
-      console.log("Loaded File Name:",stateMap['loadFileName'].value);
-      if (keyword === 'mode') {
-        const newMode =props.displayMode === 'brief' ? 'verbose' : 'brief';
-        props.setDisplayMode(newMode);
-        output = commands[keyword]([newMode]);
-      } else if (keyword === 'load') {
-        const newLoadedData = commands[keyword](args);
-        props.setLoadFileName(args[0]);
-        output = newLoadedData;
-      } else if (keyword === 'view') {
-        output = commands[keyword]([props.loadFileName.toString()]);
-      } else if (commands.hasOwnProperty(keyword)) {
-        output = commands[keyword](args);
+      const functionMap = sharedStateInstance.getFunctionMap();
+      // console.log("Loaded File Name:",stateMap['loadFileName'].value);
+      if (functionMap.has(keyword)) {
+        output = functionMap.get(keyword)(args);
+        props.setDisplayMode(sharedStateInstance.getDisplayMode());
       } else {
         output = 'ERROR: Unknown command';
       }
+      // if (keyword === 'mode') {
+      //   const newMode =props.displayMode === 'brief' ? 'verbose' : 'brief';
+      //   props.setDisplayMode(newMode);
+      //   output = commands[keyword]([newMode]);
+      // } else if (keyword === 'load') {
+      //   const newLoadedData = commands[keyword](args);
+      //   props.setLoadFileName(args[0]);
+      //   output = newLoadedData;
+      // } else if (keyword === 'view') {
+      //   output = commands[keyword]([props.loadFileName.toString()]);
+      // } else if (commands.hasOwnProperty(keyword)) {
+      //   output = commands[keyword](args);
+      // } else {
+      //   output = 'ERROR: Unknown command';
+      // }
       const newREPLResult = { 
         commandString: props.commandString, 
         output: output, // Use the output obtained from executing the command
