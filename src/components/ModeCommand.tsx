@@ -11,8 +11,14 @@ to print to history when
 
 
 export const ModeCommand: REPLFunction = (args: Array<string>): string => {
-  return (
-      "mode command called."
-      //write help menu here
-  )
+  if (args.length === 0) {
+    return "Error: No mode specified";
+  }
+  if (args[0]==="brief"){
+    return "Switched to brief mode";
+  }else if (args[0]==="verbose"){
+    return "Switched to verbose mode";
+  }else{
+    return "Error: Invalid mode";
+  }
 }
