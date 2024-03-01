@@ -1,13 +1,11 @@
 import { mockedData, csvMap } from '../../data/mocked_data/mocked_data';
-import { Dispatch, SetStateAction } from 'react';
-
-export const LoadFileCommand = (filePath: string
-  ): string[][] | string => {
-  const data = csvMap.get(filePath); 
+import { REPLFunction } from './REPL';
+export const LoadFileCommand: REPLFunction = (args: Array<string>): string|string[][] => {
+  const data = csvMap.get(args[0]);
   if (data) {
-    return data;
+    return args[0];
   } else {
-    return `Error: No data found for ${filePath}`; 
+    return `Error: No data found for ${args[0]}`; 
   }
-};
+}
 

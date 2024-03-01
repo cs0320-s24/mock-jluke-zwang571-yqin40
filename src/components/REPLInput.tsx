@@ -1,13 +1,11 @@
 import '../styles/main.css';
 import { Dispatch, SetStateAction, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
-import { loadCSVFile } from './LoadFileCommand';
-import { viewLoadedData } from './ViewCommand';
+import { LoadFileCommand } from './LoadFileCommand';
+import { ViewCommand } from './ViewCommand';
 import {EchoCommand} from './EchoCommand';
 import {ModeCommand} from './ModeCommand';
 import {SearchCommand} from './SearchCommand';
-import {ViewCommand} from './ViewCommand';
-import {LoadCommand} from './LoadFileCommand';
 import { REPLResult } from './REPL';
 import { REPLFunction } from './REPL';
 const exitCommand: REPLFunction = (args: Array<string>): string => {
@@ -32,15 +30,15 @@ const commands: { [key: string]: REPLFunction } = {
   // required commands for mock
   'mode': ModeCommand,
   'search': SearchCommand, 
-  'view': ViewCommand,
-  'load': LoadCommand
+  'view': ViewCommand,// Fix: Update the type of 'view' command
+  'load': LoadFileCommand
 };
  
 
 interface REPLInputProps{
   // TODO: Fill this with desired props... Maybe something to keep track of the submitted commands
-  loadedData: string;  
-  setLoadedData: Dispatch<SetStateAction<string>>;  
+  loadedData: string| string[][];  
+  setLoadedData: Dispatch<SetStateAction<string|string[][]>>;  
   commandString: string;
   setCommandString: Dispatch<SetStateAction<string>>
   index: number;
@@ -61,11 +59,16 @@ export function REPLInput(props : REPLInputProps) {
         const newMode =props.displayMode === 'brief' ? 'verbose' : 'brief';
         props.setDisplayMode(newMode);
         output = commands[keyword]([newMode]);
-      }
-      else if (commands.hasOwnProperty(keyword)) {
-        output = commands[keyword](args);       
+      } else if (keyword === 'load') {
+        const newLoadedData = commands[keyword](args);
+        props.setLoadedData(newLoadedData);
+        output = newLoadedData;
+      } else if (keyword === 'view') {
+        output = commands[keyword]([props.loadedData.toString()]);
+      } else if (commands.hasOwnProperty(keyword)) {
+        output = commands[keyword](args);
       } else {
-        output='ERROR: Unknown command';
+        output = 'ERROR: Unknown command';
       }
       const newREPLResult = { 
         commandString: props.commandString, 

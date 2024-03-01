@@ -1,4 +1,5 @@
 import {LoadFileCommand} from '../../src/components/LoadFileCommand';
+import { ViewCommand } from '../../src/components/ViewCommand';
 
 export var is_loaded: boolean;
 declare var filePath: string;
@@ -25,13 +26,15 @@ export const csvMap = new Map<string, any>([
   ["census.csv", mockedData.census]
 ]);
 
-loaded_data = LoadFileCommand(filePath);
+// filePath = 'stars.csv';
+// const args = [filePath];
+// loaded_data = LoadFileCommand(args);
 
-if (typeof loaded_data === 'string') {
-  is_loaded = false;
-} else {
-  is_loaded = true;
-}
+// if (typeof loaded_data === 'string') {
+//   is_loaded = false;
+// } else {
+//   is_loaded = true;
+// }
 
 
 
