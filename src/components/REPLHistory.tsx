@@ -52,6 +52,7 @@ export function REPLHistory(props: REPLHistoryProps) {
           <div key={index}>
             {props.displayMode === 'verbose' && commandDisplay}
             {outputDisplay}
+            <hr></hr>
           </div>
         );
       })}

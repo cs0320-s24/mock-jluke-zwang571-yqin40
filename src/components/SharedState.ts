@@ -62,43 +62,57 @@ export class SharedState {
 
     public SearchCommand: REPLFunction = (args: Array<string>): string|string[][] => {
         const data = mockSearchMap.get(this.filepath);
-        
         if (this.filepath=="") {
             return "Error: No data loaded";
         } else {
 
             if (args.includes('-q')) {
-                const argsNoFlags: string[] = args.filter((element) => !("-q"));
-                const queryString = argsNoFlags[0];
-                if (argsNoFlags.length > 1) {
-                    return "Error: bad query";
+                // const argsNoFlags =  args.splice(args.indexOf('-q'));
+                const elementToRemove: string = "-q"; // Element to remove
+                const argsNoFlags: string[] = args.filter((element) => element !== elementToRemove);
+
+                if (argsNoFlags.length == 0) {
+                    return "Error: no query specified";
                 } 
-                const queryMap = mockQueryMap.get(args[0]);
-                const output = queryMap.get(argsNoFlags[0]);
-                if (output) {
-                    return output
-                } else {
-                    return "No rows found for query <${args[0]}> "
-                }
+
+            
+                if (argsNoFlags.length > 1) {
+                    return "Error: too many args";
+                } 
+
+                const queryMap = mockQueryMap.get(this.filepath);
+                if (queryMap) {
+                    const output = queryMap.get(argsNoFlags[0]);
+                    if (output) {
+                        return output
+                    } else {
+                        return 'Error: bad query'
+                    }
+                } 
             } else {
                 if (args.length < 1) {
-                    return "Error: no search value specified "
+                    return "Error: no search value specified"
                 }
                 if (args.length > 2) {
                     return "Error: too many args"
                 }
 
-                const searchMap = mockSearchMap.get(args[0]);
-                const output = searchMap.get(args[0]);
-                if (output) {
-                    return output
-                } else {
-                    return "No rows found for search <${args[0]}> "
-                }   
+                const searchMap = mockSearchMap.get(this.filepath);
+                if (searchMap) {
+                    const output = searchMap.get(args[0]);
+                    if (output) {
+                        return output
+                    } else {
+                        return 'Search value {'+args+'} not found.'
+                    }   
+                }
+           
             }         
         }
+
+        return "Error: invalid search"
     }
-    private registerFunction = (command: string, func: any) => {
+    private registerFunction = (command: string, func: REPLFunction) => {
         this.functionMap.set(command, func);
     }
 

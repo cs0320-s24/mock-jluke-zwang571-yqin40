@@ -35,7 +35,10 @@ export const mockSearchStar = new Map<string, any>([
 
 export const mockQueryStar = new Map<string, any>([
   ["or(Sol,Mars)", [mockedData.stars[0], mockedData.stars[1]]],
-  ["and(Sol,Mars)", [mockedData.stars[0]]]
+  ["and(Sol,Mars)", [mockedData.stars[0]]],
+  ["(Sol)", [mockedData.stars[0]]],
+
+  ["or(Sol,and(Mars,3))",  [mockedData.stars[0]]]
 
 ]);
 
@@ -54,12 +57,12 @@ export const mockQueryCensus = new Map<string, any>([
 
 ]);
 
-export const mockQueryMap = new Map<string, any>([
+export const mockQueryMap = new Map<string, Map<string, any>>([
   ["stars.csv", mockQueryStar],
   ["census.csv", mockQueryCensus]
 ]);
 
-export const mockSearchMap = new Map<string, any>([
+export const mockSearchMap = new Map<string, Map<string, any>>([
   ["stars.csv", mockSearchStar],
   ["census.csv", mockSearchCensus]
 ]);

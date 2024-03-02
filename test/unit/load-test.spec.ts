@@ -2,31 +2,44 @@
 import { describe, expect, test } from 'vitest';
 
 // MY TESTS
-import {LoadCommand} from '../../src/components/LoadFileCommand';
+import { SharedState } from '../../src/components/SharedState';
 
 describe('LoadCommand Tests', () => {
 
 
 test('LoadCommand valid filepath', () => {
-    const goodFilepath = 'data/stars.csv'
-    var output = LoadCommand(['goodFilepath'])
-    // expect(output).toEqual('CSV file loaded successfully.')
+    
+    var sharedState = new SharedState();
+    const goodFilepath = 'stars.csv'
+    var output = sharedState.LoadFileCommand([goodFilepath])
+    expect(output).toEqual(`File <${goodFilepath}> loaded Successfully`)
 
-    const badFilepath = 'stars.csv'
-    var output = LoadCommand([badFilepath])
-    // expect(output).toEqual('ERROR: invalid filepath')  
+    const badFilepath = 'bad.csv'
+    var output = sharedState.LoadFileCommand([badFilepath])
+    expect(output).toEqual(`Error: No data found for ${badFilepath}`)  
 
-    var output = LoadCommand([])
-    // expect(output).toEqual('ERROR: no filepath specified')  
+    var output = sharedState.LoadFileCommand([])
+    expect(output).toEqual(`Error: No data found for undefined`)  
  })
 
  test('LoadCommand changes shared state', () => {
-    const goodFilepath = 'data/stars.csv'
-    var output = LoadCommand(['goodFilepath'])
-    // expect(output).toEqual('CSV file loaded successfully.')
+    
+    var sharedState = new SharedState();
+    const goodFilepath = 'stars.csv'
+    var output = sharedState.LoadFileCommand([goodFilepath])
+    expect(output).toEqual(`File <${goodFilepath}> loaded Successfully`)
+
+    var sharedState = new SharedState();
+    const goodFilepath2 = 'census.csv'
+    var output = sharedState.LoadFileCommand([goodFilepath2])
+    expect(output).toEqual(`File <${goodFilepath2}> loaded Successfully`)
 
 })
 
 
 });
+
+function LoadFileCommand(arg0: string[]) {
+    throw new Error('Function not implemented.');
+}
 

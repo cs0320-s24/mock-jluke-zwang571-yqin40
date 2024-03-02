@@ -40,14 +40,14 @@ test('ModeCommand switches to verbose/brief/verbose', () => {
  })
 
  test('ModeCommand no arg', () => {
-  var sharedState = new sharedState.SharedState();
+  var sharedState = new SharedState();
 
-  var output = sharedState.ModeCommand([])
+  var output = sharedState.modeCommand([])
   // expect(output).toEqual('Error: No mode specified')
 
 })
 test('ModeCommand bad arg', () => {
-  var sharedState = new sharedState.SharedState();
+  var sharedState = new SharedState();
 
   var output = sharedState.modeCommand(['badArg'])
   // expect(output).toEqual('Error: Invalid mode')
