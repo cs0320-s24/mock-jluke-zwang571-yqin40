@@ -2,8 +2,13 @@
 import { describe, expect, test } from 'vitest';
 
 // MY TESTS
-import {LoadCommand} from '../../src/components/LoadFileCommand';
-import {SearchCommand} from '../../src/components/SearchCommand';
+// import {LoadCommand} from '../../src/components/LoadFileCommand';
+// import {SearchCommand} from '../../src/components/SearchCommand';
+
+// import {LoadFileCommand} from '../../src/components/SharedState';
+// import {SearchCommand} from '../../src/components/SharedState';
+
+import {SharedState} from '../../src/components/SharedState';
 
 const tenStarMockData = [
     ["StarID","ProperName","X","Y","Z"],
@@ -23,72 +28,76 @@ const tenStarMockData = [
 describe('SearchCommand Tests', () => {
 
 test('SearchCommand no arg', () => {
-    var output = SearchCommand([])
-    // expect(output).toEqual('ERROR: no CSV file loaded.')
-    const goodFilepath = 'data/ten-star.csv'
-    LoadCommand(['goodFilepath'])
-    var output = SearchCommand([])
-    // expect(output).toEqual('ERROR: no search value specified.')
+    var sharedState = new SharedState();
+    var output = sharedState.SearchCommand([])
+    // expect(output).toEqual('Error: No data loaded')
+    const goodFilepath = 'star.csv'
+    sharedState.LoadFileCommand(['goodFilepath'])
+    var output = sharedState.SearchCommand([])
+    expect(output).toEqual('Error: no search value specified')
 })
 
 test('SearchCommand no file loaded', () => {
-    var output = SearchCommand(['hello'])
-    // expect(output).toEqual('ERROR: no CSV file loaded.')
-    const goodFilepath = 'data/ten-star.csv'
-    LoadCommand(['goodFilepath'])
+    var sharedState = new SharedState();
+
+    var output = sharedState.SearchCommand(['hello'])
+    // expect(output).toEqual('Error: No data loaded')
+    const goodFilepath = 'star.csv'
+    sharedState.LoadFileCommand(['goodFilepath'])
     const args = ['hello']
-    var output = SearchCommand(args)
-    // expect(output).toEqual('Search value {'+args+'} not found.')
+    var output = sharedState.SearchCommand(args)
+    expect(output).toEqual('Search value {'+args+'} not found.')
 })
 
-test('SearchCommand simple search', () => {
-    const goodFilepath = 'data/ten-star.csv'
-    LoadCommand(['goodFilepath'])
-    const args = ['Sol']
-    var output = SearchCommand(args)
-    // expect(output).toEqual(["0","Sol","0","0","0"])
+test('SearchCommand too many args', () => {
+    var sharedState = new SharedState();
+
+    const goodFilepath = 'star.csv'
+    sharedState.LoadFileCommand(['goodFilepath'])
+    const args = ['1', '2', '3']
+    var output = sharedState.SearchCommand(args)
 })
 
+
 test('SearchCommand simple search', () => {
-    const goodFilepath = 'data/ten-star.csv'
-    LoadCommand(['goodFilepath'])
+    var sharedState = new SharedState();
+
+    const goodFilepath = 'star.csv'
+    sharedState.LoadFileCommand(['goodFilepath'])
     //single row output
     const args = ['Sol']
-    var output = SearchCommand(args)
-    // expect(output).toEqual([["0","Sol","0","0","0"]])
+    var output = sharedState.SearchCommand(args)
+    expect(output).toEqual([["0","Sol","0","0","0"]])
 
-    // multiple row output
-    var output = SearchCommand([""])
-    // expect(output).toEqual([
-    //     ["1","","282.43485","0.00449","5.36884"],
-    //     ["2","","43.04329","0.00285","-15.24144"],
-    //     ["3","","277.11358","0.02422","223.27753"],
-    //     ["118721","","-2.28262","0.64697","0.29354"]
-    // ])
+
  })
 
  test('SearchCommand query search', () => {
-    const goodFilepath = 'data/ten-star.csv'
-    LoadCommand(['goodFilepath'])
+    var sharedState = new SharedState();
+
+    const goodFilepath = 'star.csv'
+    sharedState.LoadFileCommand(['goodFilepath'])
     //single query 
-    const args = ['-q', 'or(Sol,3']
-    var output = SearchCommand(args)
-    // expect(output).toEqual([["0","Sol","0","0","0"], ["3","","277.11358","0.02422","223.27753"]])
+    const args = ['-q', 'or(Sol,Mars)']
+    var output = sharedState.SearchCommand(args)
+    expect(output).toEqual([["0","Sol","0","0","0"], ["3","","277.11358","0.02422","223.27753"]])
     
     //nested query
     const args2 = ['-q', 'or(Sol,and(, 3))']
-    var output = SearchCommand(args2)
-    // expect(output).toEqual([["0","Sol","0","0","0"], ["3","","277.11358","0.02422","223.27753"]])
+    var output = sharedState.SearchCommand(args2)
+    expect(output).toEqual([["0","Sol","0","0","0"], ["3","","277.11358","0.02422","223.27753"]])
 
 })
 
 test('SearchCommand bad query', () => {
-    const goodFilepath = 'data/ten-star.csv'
-    LoadCommand(['goodFilepath'])
+    var sharedState = new SharedState();
+
+    const goodFilepath = 'star.csv'
+    sharedState.LoadFileCommand(['goodFilepath'])
     //single row output
     const args = ['-q', 'nor(Sol,3']
-    var output = SearchCommand(args)
-    // expect(output).toEqual('ERROR: bad query')
+    var output = sharedState.SearchCommand(args)
+    expect(output).toEqual('ERROR: bad query')
 
 })
 

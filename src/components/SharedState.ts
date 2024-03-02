@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { REPLFunction } from "./REPL";
-import { mockedData, csvMap } from '../../data/mocked_data/mocked_data';
+import { mockedData, csvMap, mockSearchMap, mockQueryMap } from '../../data/mocked_data/mocked_data';
+import { EchoCommand } from "./EchoCommand";
 
 
 export class SharedState {
@@ -15,9 +16,12 @@ export class SharedState {
             this.loadedData = [[]];
             this.filepath ="" ;
             this.functionMap = new Map<string, any>(); // Initialize functionMap with an empty Map object
+            //funcitons
             this.functionMap.set("mode", this.modeCommand);
             this.functionMap.set("load", this.LoadFileCommand);
             this.functionMap.set("view", this.ViewCommand);
+            this.functionMap.set("search", this.SearchCommand);
+            this.functionMap.set("echo", EchoCommand)
     }
 
     public getFunctionMap = () => {
@@ -57,6 +61,8 @@ export class SharedState {
     }
 
     public SearchCommand: REPLFunction = (args: Array<string>): string|string[][] => {
+        const data = mockSearchMap.get(this.filepath);
+        
         if (this.filepath=="") {
             return "Error: No data loaded";
         } else {
@@ -66,11 +72,30 @@ export class SharedState {
                 const queryString = argsNoFlags[0];
                 if (argsNoFlags.length > 1) {
                     return "Error: bad query";
-                }                 
-                return [this.loadedData[0]];
+                } 
+                const queryMap = mockQueryMap.get(args[0]);
+                const output = queryMap.get(argsNoFlags[0]);
+                if (output) {
+                    return output
+                } else {
+                    return "No rows found for query <${args[0]}> "
+                }
             } else {
-                return [this.loadedData[1]];
-            }
+                if (args.length < 1) {
+                    return "Error: no search value specified "
+                }
+                if (args.length > 2) {
+                    return "Error: too many args"
+                }
+
+                const searchMap = mockSearchMap.get(args[0]);
+                const output = searchMap.get(args[0]);
+                if (output) {
+                    return output
+                } else {
+                    return "No rows found for search <${args[0]}> "
+                }   
+            }         
         }
     }
     private registerFunction = (command: string, func: any) => {

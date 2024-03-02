@@ -11,9 +11,9 @@ export const mockedData = {
   ] as const,
 
   census: [
-    ["Rhode Island", "74,489.00", "95,198.00", "39,603.00"],
-    ["South Carolina", "1,290,684.00", "1,390,524.00", "1,190,844.00"],
-    ["South Dakota", "196,730.00", "206,580.00", "186,880.00"],
+    ["RhodeIsland", "74,489.00", "95,198.00", "39,603.00"],
+    ["SouthCarolina", "1,290,684.00", "1,390,524.00", "1,190,844.00"],
+    ["SouthDakota", "196,730.00", "206,580.00", "186,880.00"],
     ["Tennessee", "1,186,166.00", "1,286,006.00", "1,086,326.00"]
   ] as const
 };
@@ -23,15 +23,50 @@ export const csvMap = new Map<string, any>([
   ["census.csv", mockedData.census]
 ]);
 
-// filePath = 'stars.csv';
-// const args = [filePath];
-// loaded_data = LoadFileCommand(args);
 
-// if (typeof loaded_data === 'string') {
-//   is_loaded = false;
-// } else {
-//   is_loaded = true;
-// }
+
+export const mockSearchStar = new Map<string, any>([
+  ["Sol", [mockedData.stars[0]]],
+  ["Mars", [mockedData.census[1]]], 
+  ["Earth", [mockedData.stars[2]]],
+
+
+]);
+
+export const mockQueryStar = new Map<string, any>([
+  ["or(Sol,Mars)", [mockedData.stars[0], mockedData.stars[1]]],
+  ["and(Sol,Mars)", [mockedData.stars[0]]]
+
+]);
+
+export const mockSearchCensus = new Map<string, any>([
+  ["RhodeIsland", [mockedData.census[0]]],
+  ["SouthCarolina", [mockedData.census[1]]], 
+  ["SouthDakota", [mockedData.census[2]]],
+  ["Tennessee", [mockedData.census[3]]],
+
+
+]);
+
+export const mockQueryCensus = new Map<string, any>([
+  ["or(RhodeIsland,SouthCarolina)", [mockedData.census[0], mockedData.census[1]]],
+  ["and(RhodeIsland,SouthCarolina)", [mockedData.census[0]]]
+
+]);
+
+export const mockQueryMap = new Map<string, any>([
+  ["stars.csv", mockQueryStar],
+  ["census.csv", mockQueryCensus]
+]);
+
+export const mockSearchMap = new Map<string, any>([
+  ["stars.csv", mockSearchStar],
+  ["census.csv", mockSearchCensus]
+]);
+
+
+
+
 
 
 
